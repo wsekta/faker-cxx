@@ -81,17 +81,14 @@ std::string StringHelper::removePunctuation(const std::string& word)
 
     return result;
 }
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-std::vector<std::string> StringHelper::convertToUTF8(const std::vector<std::wstring>& wstr)
+
+std::vector<std::string> StringHelper::convertToUTF8(const std::vector<std::u8string>& ustr)
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> converter; 
     std::vector<std::string> str;
-    for (auto& item : wstr)
+    for (auto& item : ustr)
     {
-        str.push_back(converter.to_bytes(item));
+        str.push_back(std::string(reinterpret_cast<const char *>(item.c_str())));
     }
     return str;
 }
-#pragma GCC diagnostic pop
 }
